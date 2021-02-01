@@ -1,4 +1,4 @@
-
+import os
 class AlignmentCell:
     """
     A cell of the alignment matrix
@@ -12,6 +12,7 @@ class AlignmentCell:
         return str(self.score)+' '+self.direction
 
 class AlignmentMatrix:
+
     def __init__(self,first_sequence,second_sequence):
         if type(first_sequence)!=str:
             raise TypeError(f"first_sequence must be a string not {type(first_sequence)}")
@@ -23,6 +24,8 @@ class AlignmentMatrix:
         self.fill_score_matrix()
     
     def fill_score_matrix(self):
+        indel_score = int(os.getenv("INDEL"))
+        match_score = int(os.getenv("MATCH"))
         self.score_matrix = []
         for i in range(len(self.second_sequence)):
             for j in range(len(self.first_sequence)):
@@ -33,12 +36,11 @@ class AlignmentMatrix:
                 elif self.second_sequence[i]=='*':
                     self.score_matrix[i].append(AlignmentCell(0,'stop'))
                 else:
-                    vertical = self.score_matrix[i-1][j].score
-                    horizontal = self.score_matrix[i][j-1].score
+                    vertical = self.score_matrix[i-1][j].score+indel_score
+                    horizontal = self.score_matrix[i][j-1].score+indel_score
                     #por enquanto estou ignorando mismatch
-                    #TODO: adicionar um .env com a punição para indel e score para match fixos
                     #TODO: considerar blosum62 [2,3]
-                    diagonal = self.score_matrix[i-1][j-1].score+1 if self.first_sequence[i]==self.second_sequence[j] else 0
+                    diagonal = self.score_matrix[i-1][j-1].score+match_score if self.first_sequence[i]==self.second_sequence[j] else 0
                     score = max(horizontal,vertical,diagonal)
                     if score == horizontal:
                         self.score_matrix[i].append(AlignmentCell(score,'h'))
