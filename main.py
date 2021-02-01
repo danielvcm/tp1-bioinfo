@@ -1,5 +1,6 @@
 import sys
-from .src.alignment_matrix import AlignmentMatrix
+from dotenv import load_dotenv
+from src.alignment_matrix import AlignmentMatrix
 
 
 def main():
@@ -11,3 +12,6 @@ def main():
         matrix = AlignmentMatrix(sys.argv[1],sys.argv[2])
         print(matrix)
 
+if "__main__"==__name__:
+    load_dotenv()
+    main()
