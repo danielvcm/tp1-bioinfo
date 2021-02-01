@@ -26,6 +26,7 @@ class AlignmentMatrix:
     def fill_score_matrix(self):
         indel_score = int(os.getenv("INDEL"))
         match_score = int(os.getenv("MATCH"))
+        blosum = dict(os.getenv("BLOSUM62"))
         self.score_matrix = []
         for i in range(len(self.second_sequence)):
             for j in range(len(self.first_sequence)):
