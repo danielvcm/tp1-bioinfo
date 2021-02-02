@@ -11,7 +11,7 @@ def main():
     #TODO: ler do arquivo e tratar entrada
     if len(sys.argv)>2:
         align = AlignmentMatrix(sys.argv[1],sys.argv[2])
-        score_matrix, first_seq, second_seq = align.calculate_alignment()
+        first_seq, second_seq = align.get_alligned_sequences()
         print(align)
         print(first_seq)
         print(second_seq)

@@ -5,7 +5,7 @@ class AlignmentCell:
     """
     A cell of the alignment matrix
     args: score: int
-        direction: str {'v','h','d'}
+        direction: str {'_','|','\\','.'}
     """
     def __init__(self, score, direction):
         self.score = score
@@ -28,8 +28,7 @@ class AlignmentMatrix:
     def calculate_alignment(self):
         self.fill_first_row_and_column()
         self.fill_score_matrix()
-        first_seq, second_seq = self.print_sequence()
-        return self.score_matrix, first_seq, second_seq
+
 
     def validate_input(self):
         if type(self.first_sequence)!=str:
@@ -59,23 +58,23 @@ class AlignmentMatrix:
 
                 blosum_score = blosum[self.second_sequence[i]][self.first_sequence[j]]
 
-                vertical = self.score_matrix[i-1][j].score + self.indel_score + blosum_score
-                horizontal = self.score_matrix[i][j-1].score + self.indel_score + blosum_score
+                vertical = self.score_matrix[i-1][j].score + self.indel_score
+                horizontal = self.score_matrix[i][j-1].score + self.indel_score
                 diagonal = self.score_matrix[i - 1][j - 1].score + blosum_score
 
                 if self.second_sequence[i] == self.first_sequence[j]:
                     self.score_matrix[i].append(AlignmentCell(diagonal, '\\'))
                 else:
                     score = max(horizontal, vertical, diagonal)
-
-                    if score == horizontal:
+                    if score == diagonal:
+                        self.score_matrix[i].append(AlignmentCell(score,'\\'))
+                    elif score == horizontal:
                         self.score_matrix[i].append(AlignmentCell(score,'_'))
                     elif score == vertical:
                         self.score_matrix[i].append(AlignmentCell(score,'|'))
-                    elif score == diagonal:
-                        self.score_matrix[i].append(AlignmentCell(score,'\\'))
+                    
 
-    def print_sequence(self):
+    def get_alligned_sequences(self):
         row = len(self.second_sequence) - 1
         col = len(self.first_sequence) - 1
         first_seq = ''
