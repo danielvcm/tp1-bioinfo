@@ -17,16 +17,13 @@ class AlignmentCell:
 
 # noinspection SpellCheckingInspection
 class AlignmentMatrix:
-
     def __init__(self, first_sequence, second_sequence):
         self.first_sequence = first_sequence
         self.second_sequence = second_sequence
         self.indel_score = int(os.getenv("INDEL"))
-        self.match_score = int(os.getenv("MATCH"))
         self.validate_input()
         self.score_matrix = [[] for _ in range(len(self.second_sequence))]
         self.calculate_alignment()
-
 
     def calculate_alignment(self):
         self.fill_first_row_and_column()
@@ -39,8 +36,6 @@ class AlignmentMatrix:
             raise TypeError(f"first_sequence must be a string not {type(self.first_sequence)}")
         if type(self.second_sequence)!=str:
             raise TypeError(f"second_sequence must be a string not {type(self.second_sequence)}")
-
-
         self.first_sequence = '*' + self.first_sequence.lower()
         self.second_sequence = '*' + self.second_sequence.lower()
 
@@ -86,7 +81,7 @@ class AlignmentMatrix:
         first_seq = ''
         second_seq = ''
 
-        while row > 0 or col >0:
+        while row > 0 or col > 0:
             if self.score_matrix[row][col].direction == '\\':
                 first_seq = self.first_sequence[col] + first_seq
                 second_seq = self.second_sequence[row] + second_seq
@@ -109,7 +104,7 @@ class AlignmentMatrix:
             s+=str(self.first_sequence[l])+',   '
         s+='\n'
         for l in range(len(self.score_matrix)):
-            s+=str(self.second_sequence[l])+' '+str(self.score_matrix[l])+'\n'
+            s+=str(self.second_sequence[l])+' '+ str(self.score_matrix[l])+'\n'
         return s
 
 
