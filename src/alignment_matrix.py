@@ -35,8 +35,8 @@ class AlignmentMatrix:
             raise TypeError(f"first_sequence must be a string not {type(self.first_sequence)}")
         if type(self.second_sequence)!=str:
             raise TypeError(f"second_sequence must be a string not {type(self.second_sequence)}")
-        self.first_sequence = '*' + self.first_sequence.lower()
-        self.second_sequence = '*' + self.second_sequence.lower()
+        self.first_sequence = '*' + self.first_sequence.upper()
+        self.second_sequence = '*' + self.second_sequence.upper()
 
 
     def fill_first_row_and_column(self):
@@ -95,15 +95,15 @@ class AlignmentMatrix:
                 second_seq = self.second_sequence[row] + second_seq
                 row -=1
 
-        return first_seq.upper(), second_seq.upper()
+        return first_seq, second_seq
 
     def __repr__(self) -> str:
         s = '   '
         for l in range(len(self.first_sequence)):
-            s+=str(self.first_sequence[l].upper())+',   '
+            s+=str(self.first_sequence[l])+',   '
         s+='\n'
         for l in range(len(self.score_matrix)):
-            s+=str(self.second_sequence[l].upper())+' '+ str(self.score_matrix[l])+'\n'
+            s+=str(self.second_sequence[l])+' '+ str(self.score_matrix[l])+'\n'
         return s
 
 
