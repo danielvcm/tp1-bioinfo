@@ -1,4 +1,5 @@
 import sys
+
 from dotenv import load_dotenv
 from src.alignment_matrix import AlignmentMatrix
 
@@ -9,8 +10,12 @@ def main():
     """
     #TODO: ler do arquivo e tratar entrada
     if len(sys.argv)>2:
-        matrix = AlignmentMatrix(sys.argv[1],sys.argv[2])
-        print(matrix)
+        align = AlignmentMatrix(sys.argv[1],sys.argv[2])
+        score_matrix, first_seq, second_seq = align.calculate_alignment()
+        print(align)
+        print(first_seq)
+        print(second_seq)
+
 
 if "__main__"==__name__:
     load_dotenv()
