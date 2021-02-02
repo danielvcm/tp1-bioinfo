@@ -35,14 +35,14 @@ def get_params():
             verbose = True
         elif sys.argv[i] == '-h':
             print(user_helpers.help(__file__))
-            return
+            exit()
         elif sys.argv[i] == '-f':
             file_name = None
             if len(sys.argv)>i:
                 file_name = sys.argv[i+1]
             if not file_name:
                 print(user_helpers.file_input_usage())
-                return
+                exit()
             else:
                 [first_sequence, second_sequence] = parse_file(file_name)
         else:
