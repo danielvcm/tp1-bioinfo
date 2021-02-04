@@ -13,8 +13,10 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 data = open("input_example.fasta").read()
 
 app.layout = html.Div([
+    html.H1("Sequence Alignment", style={'text-align':'center'}),
+
     dashbio.AlignmentChart(
-        id='alignment-viewer',
+        id='my-alignment-viewer',
         data=data
     ),
     html.Div(id='alignment-viewer-output')
@@ -32,5 +34,10 @@ def update_output(value):
 
 
 if __name__ == '__main__':
+    import threading
+
+    webbrowser.open("http://127.0.0.1:8050/", new=2)
     app.run_server(debug=True)
-    # webbrowser.open("http://127.0.0.1:8050/", new=1)
+
+
+
