@@ -25,7 +25,7 @@ def get_params():
             elif not second_sequence:
                 second_sequence = sys.argv[i]
                 break
-    return verbose,first_sequence,second_sequence
+    return verbose, first_sequence, second_sequence
 
 def parse_file(file_name):
     sequences = []

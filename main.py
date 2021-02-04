@@ -22,7 +22,7 @@ def main():
         verbose, first_sequence, second_sequence = get_params()
         if first_sequence and second_sequence:
             align = AlignmentMatrix(first_sequence,second_sequence)
-            print_result(align, verbose=True)
+            print_result(align, verbose=verbose)
         else:
             print(user_helpers.usage(__file__))
     else:
