@@ -16,13 +16,14 @@ class AlignmentCell:
 
 
 # noinspection SpellCheckingInspection
-class AlignmentMatrix:
+class PairWiseAlignment:
     def __init__(self, first_sequence, second_sequence):
         self.first_sequence = first_sequence
         self.second_sequence = second_sequence
         self.indel_score = int(os.getenv("INDEL"))
         self.validate_input()
         self.score_matrix = [[] for _ in range(len(self.second_sequence))]
+        self.alignment_score = 0
         self.calculate_alignment()
 
     def calculate_alignment(self):
@@ -56,7 +57,10 @@ class AlignmentMatrix:
         for i in range(1, len(self.second_sequence)):
             for j in range(1, len(self.first_sequence)):
 
-                blosum_score = blosum[self.second_sequence[i]][self.first_sequence[j]]
+                try:
+                    blosum_score = blosum[self.second_sequence[i]][self.first_sequence[j]]
+                except:
+                    raise Exception("Entrada com alguma proteina não existente na BLOSUM62")
 
                 vertical = self.score_matrix[i-1][j].score + self.indel_score
                 horizontal = self.score_matrix[i][j-1].score + self.indel_score
@@ -72,7 +76,8 @@ class AlignmentMatrix:
                         self.score_matrix[i].append(AlignmentCell(score,'_'))
                     elif score == vertical:
                         self.score_matrix[i].append(AlignmentCell(score,'|'))
-                    
+
+        self.alignment_score = self.score_matrix[-1][-1].score
 
     def get_alligned_sequences(self):
         row = len(self.second_sequence) - 1
@@ -80,7 +85,7 @@ class AlignmentMatrix:
         first_seq = ''
         second_seq = ''
 
-        while row > 0 or col > 0:
+        while row > 0 and col > 0 and self.score_matrix[row][col].direction != '.':
             if self.score_matrix[row][col].direction == '\\':
                 first_seq = self.first_sequence[col] + first_seq
                 second_seq = self.second_sequence[row] + second_seq
