@@ -3,4 +3,3 @@ dash
 dash_bio
 requests
 oauthlib
-biopython
