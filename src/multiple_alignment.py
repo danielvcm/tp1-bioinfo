@@ -2,9 +2,6 @@ from src.pairwise_alignment import PairWiseAlignment
 import os
 from dotenv import load_dotenv
 import heapq as hp
-from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
-from Bio.Phylo.TreeConstruction import DistanceCalculator
-from Bio import AlignIO
 
 class MultipleAlignment:
     """
@@ -32,7 +29,7 @@ class MultipleAlignment:
 
     def assemble_final_consensus(self):
         trash_of_sequences = set()
-
+        consensus = ''
         while len(self.alignment_mapping) > 1:
 
             seq1, seq2 = self.get_viable_sequences(trash_of_sequences)
@@ -92,7 +89,6 @@ class MultipleAlignment:
 
     def get_aligned_sequences(self):
 
-        print("final consensus", self.final_consensus)
         # cria um vetor de string alinhadas
         aligned_sequences = ['' for _ in range(len(self.sequences))]
 
@@ -101,13 +97,11 @@ class MultipleAlignment:
 
         for idx in reversed(range(0, len(self.final_consensus))):
             consensus_char = self.final_consensus[idx]
-            print("lookin at char", consensus_char)
+            #print("lookin at char", consensus_char)
 
             if consensus_char != 'X':
-                print("char is diff of X")
                 for sequence_id, seq in enumerate(self.sequences):
                     aligned_sequences[sequence_id] = consensus_char + aligned_sequences[sequence_id]
-                print("new sequences are:", aligned_sequences)
 
             # analisar a letra na posição corresondente em todas as seq
             majority = None

@@ -22,10 +22,16 @@ def main():
     Para alterar a penalidade de indel, alterar o arquivo .env
     """
     if len(sys.argv) >= 2:
-        verbose, first_sequence, second_sequence = get_params()
-        if first_sequence and second_sequence:
-            align = PairWiseAlignment(first_sequence, second_sequence)
-            print_result(align, verbose=True)
+        verbose, sequences = get_params()
+        if len(sequences)==2:
+            align = PairWiseAlignment(sequences[0], sequences[1])
+            print_result(align, verbose=verbose)
+        elif len(sequences)>2:
+            align = MultipleAlignment(sequences)
+            align.align()
+            if verbose:
+                print("Final consensus:")
+            print(align.final_consensus)
         else:
             print(user_helpers.usage(__file__))
     else:
@@ -40,5 +46,4 @@ def multiple_align():
 
 if "__main__" == __name__:
     load_dotenv()
-    # main()
-    multiple_align()
+    main()
