@@ -1,5 +1,6 @@
 import sys
 
+import src.user_helpers as user_helpers
 from dotenv import load_dotenv
 from src.pairwise_alignment import PairWiseAlignment
 from src.multiple_alignment import MultipleAlignment
