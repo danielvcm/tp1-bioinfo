@@ -8,6 +8,12 @@ Valéria Pereira
 
 ## Como executar
 
+Para instalar as bibliotecas necessárias, antes de rodar o programa pela primeira vez, execute:
+
+`pip install -r requirements.txt`
+
+
+
 #### Alinhamento de duas sequências
 
 ``python main.py SEQUENCIA1 SEQUENCIA2``
