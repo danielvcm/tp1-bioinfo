@@ -54,7 +54,6 @@ class PairWiseAlignment:
             self.score_matrix[i].append(AlignmentCell(score, '.'))
 
     def fill_score_matrix(self):
-        print("Filling score matrix")
         for i in range(1, len(self.second_sequence)):
             for j in range(1, len(self.first_sequence)):
 
@@ -81,7 +80,6 @@ class PairWiseAlignment:
         self.alignment_score = self.score_matrix[-1][-1].score
 
     def get_alligned_sequences(self):
-        print("Getting aligned sequences")
         row = len(self.second_sequence) - 1
         col = len(self.first_sequence) - 1
         first_seq = ''
@@ -94,7 +92,6 @@ class PairWiseAlignment:
                 row -= 1
                 col -= 1
             elif self.score_matrix[row][col].direction == '_':
-                print("B")
                 first_seq = self.first_sequence[col] + first_seq
                 second_seq = '-' + second_seq
                 col -= 1
