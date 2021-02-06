@@ -4,17 +4,7 @@ from dotenv import load_dotenv
 import heapq as hp
 
 class MultipleAlignment:
-    """
-    2 - fazer o upgma
-
-    > ({abc, bcd}, 10) -> nova sequencia xabcx. Atualiza
-    ({abc, acd}, 20) ->
-    ({bcd, acd}, 30)
-
-    3 - construir consensos
-    (stringA, stringB, valor de alinhamento, consenso)
-    (stringC, stringD, valor de alinhamento, consenso)
-    """
+    
     def __init__(self, sequences):
         self.sequences = sequences
         self.alignment_matrix = None
@@ -25,7 +15,6 @@ class MultipleAlignment:
     def align(self):
         self.calculate_scores_matrix()
         self.assemble_final_consensus()
-        return self.get_aligned_sequences()
 
     def assemble_final_consensus(self):
         trash_of_sequences = set()
@@ -52,7 +41,6 @@ class MultipleAlignment:
             del self.alignment_mapping[seq2]
 
         self.final_consensus = consensus
-
 
     def update_scores_mapping(self, consensus, present_sequences, remaining_sequences):
         for rem_seq in remaining_sequences:
@@ -87,39 +75,6 @@ class MultipleAlignment:
                 consensus = consensus + 'X'
         return consensus
 
-    def get_aligned_sequences(self):
-
-        # cria um vetor de string alinhadas
-        aligned_sequences = ['' for _ in range(len(self.sequences))]
-
-        # cria um vetor de índices
-        current_index = [len(seq)-1 for seq in self.sequences]
-
-        for idx in reversed(range(0, len(self.final_consensus))):
-            consensus_char = self.final_consensus[idx]
-            #print("lookin at char", consensus_char)
-
-            if consensus_char != 'X':
-                for sequence_id, seq in enumerate(self.sequences):
-                    aligned_sequences[sequence_id] = consensus_char + aligned_sequences[sequence_id]
-
-            # analisar a letra na posição corresondente em todas as seq
-            majority = None
-            for sequence_id, seq in enumerate(self.sequences):
-                # se a seq já tiver acabado, printa '-'
-                # if current_index[sequence_id] < 0:
-                #     aligned_sequences[sequence_id] = '-' + aligned_sequences[sequence_id]
-                if seq[current_index[sequence_id]] == consensus_char:
-                    aligned_sequences[sequence_id] = consensus_char + aligned_sequences[sequence_id]
-                    current_index[sequence_id] -= 1
-                else:
-                    aligned_sequences[sequence_id] = '-' + aligned_sequences[sequence_id]
-
-                # caso a seq[pos] tenha a mesma letra nessa posição, printa ela, e reduz o indice
-                # caso não seja, printa '-' e não diminui o índice
-
-        return aligned_sequences
-
     def calculate_scores_matrix(self):
         n = len(self.sequences)
 
@@ -135,21 +90,4 @@ class MultipleAlignment:
                 tup = (-align.alignment_score, seq1, seq2)  # o negativo é pra fazer maxheap
                 hp.heappush(self.scores, tup)
 
-
-        # for string in self.sequences:
-        #     mapping[string]= {}
-        #     for string2 in self.sequences:
-        #         if string2 != string:
-        #             mapping[string][string2] = None
-
-
-        #
-        # self.alignment_matrix = [[None for _ in range(n)] for _ in range(n)]
-        # for i in range(n):
-        #     for j in range(i + 1, n):
-        #         align = PairWiseAlignment(self.sequences[i], self.sequences[j])
-        #         score = align.alignment_score
-        #         tup = (-score, self.sequences[i], self.sequences[j])  # o negativo é pra fazer maxheap
-        #         hp.heappush(self.scores, tup)
-        #         self.alignment_matrix[i][j] = score
 
